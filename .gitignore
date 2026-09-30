@@ -1,0 +1,52 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+
+# --- Environment / secrets (e.g. HF_TOKEN) ---
+.env
+.env.*
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Generated data (reproducible via src/data_prep.py, see handoffs/02_part2_data_prep.md) ---
+data/processed/
+data/stsb/
+
+# --- Hugging Face / dataset / model download caches, if pointed at the repo ---
+.cache/
+**/.cache/
+huggingface_cache/
+
+# --- Training runs: keep the log + small metadata, drop the heavy checkpoints ---
+runs/*/checkpoint/
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+
+# --- Local export of published models (weights only; keep the model card README) ---
+model_cards/*/*
+!model_cards/*/README.md
+
+# --- Experiment tracking, if used ---
+wandb/
+mlruns/
