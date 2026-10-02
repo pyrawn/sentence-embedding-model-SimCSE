@@ -5,6 +5,14 @@ Read `handoffs/00_INDEX.md` first for shared paths/conventions.
 **Depends on**: Part 3's base unsupervised and supervised runs (for the
 baseline configs to diff against) and Part 4 Phase A (eval harness).
 
+**No local GPU**: same constraint as Part 3. Write the two ablation configs
+and confirm `src/train_simcse.py` accepts them locally (config validation
+only, no real training), then package and run these two on Kaggle following
+"Running training on Kaggle" in `00_INDEX.md` — same dataset/notebook setup
+as Part 3, just swap the config file. You cannot execute the runs yourself;
+stop after packaging and resume the "Analysis" section once the checkpoints
+and `run_record.json` files are brought back locally.
+
 ## Task
 Run exactly one ablation per mode. In each, change **one thing only** versus
 the corresponding Part 3 baseline config — everything else (seed, batch size,
@@ -53,7 +61,7 @@ Write this to `reports/ablations.md`.
 - `configs/ablation_unsup_same_mask.json` and
   `configs/ablation_sup_no_hardneg.json` exist and differ from their baseline
   by exactly one field.
-- Both ablation runs are logged in `runs/run_log.jsonl` with checkpoints under
-  `runs/<run_id>/`.
+- Both ablation runs are logged in `runs/run_log.jsonl` with checkpoints
+  downloaded from Kaggle and present locally under `runs/<run_id>/`.
 - `reports/ablations.md` contains both comparisons with dev deltas, a noise
   estimate, and a mechanistic explanation for each.

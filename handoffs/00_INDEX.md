@@ -22,9 +22,12 @@ run") that must happen before Part 3's training runs. Follow this DAG:
    raw `bert-base-uncased` and `SBERT-2019` reference numbers. Do **not** proceed
    to training until this passes.
 3. **Part 3** — train unsupervised and supervised models (can run as two parallel
-   workers once step 2 passes; both import `src/evaluate.py` from step 2).
+   workers once step 2 passes; both import `src/evaluate.py` from step 2). **No
+   local GPU is available — these runs execute on Kaggle Notebooks**, see
+   "Running training on Kaggle" below.
 4. **Part 5** — ablations (reuses the Part 3 training script with one flag
-   changed; can start as soon as Part 3's base runs are done).
+   changed; can start as soon as Part 3's base runs are done). **Also runs on
+   Kaggle**, same workflow as Part 3.
 5. **Part 4, Phase B** — full evaluation analysis (alignment/uniformity,
    similarity-distribution plot, retrievals) on the checkpoints from step 3.
 6. **Part 6** — benchmark table + gap analysis (needs results from 3, 4, 5, plus
@@ -76,6 +79,51 @@ model_cards/
   <model_name>/README.md         # Part 7
 requirements.txt                 # pinned deps, every part that adds a dependency updates this
 ```
+
+## Running training on Kaggle (no local GPU)
+
+The development machine has no GPU. **Only Part 3 and Part 5 need one**
+(model training) — Parts 2, 4, 6, 7 are data processing / CPU-feasible
+inference (embedding a few thousand STS-B sentences on CPU is a couple of
+minutes, not hours) and run locally as normal. Do not move those to Kaggle;
+it just adds sync overhead for no benefit.
+
+For Part 3 / Part 5, the worker agent cannot execute inside Kaggle directly
+(no shell access to Kaggle's remote runtime) — it prepares everything needed,
+the human runs it on Kaggle, then the agent (or the human) imports the
+results back. Workflow:
+
+1. **Package for Kaggle.** Create/update a Kaggle Dataset (e.g.
+   `simcse-snli-inputs`) containing: the relevant file from
+   `data/processed/` (`unsup_sentences.txt` or `sup_pairs.jsonl`), the config
+   JSON being run, `src/train_simcse.py` (and anything it imports, e.g.
+   `src/evaluate.py`), and `requirements.txt`. Re-upload a new dataset
+   version whenever the code or config changes.
+2. **Create the Kaggle Notebook.** Attach that dataset as input. Settings:
+   Accelerator = GPU (T4 x2 or P100), Internet = On (needed for `pip install`
+   and to pull `bert-base-uncased` from the Hub). Kaggle requires phone
+   verification on the account to enable GPU + Internet together — flag this
+   to the user if it hasn't been done yet, don't assume it's set up.
+3. **Notebook cells**, in order:
+   - `!pip install -q -r /kaggle/input/<dataset-slug>/requirements.txt`
+   - Copy the input files into the same relative layout the script expects
+     (e.g. `data/processed/unsup_sentences.txt`) under `/kaggle/working/`, so
+     paths in `src/train_simcse.py` resolve unmodified.
+   - Run training, writing outputs under `/kaggle/working/runs/<run_id>/`:
+     `!python train_simcse.py --mode unsup --config unsupervised.json --output_dir runs/<run_id>`
+   - Final cell: write `runs/<run_id>/run_record.json` — **one** JSON object
+     matching the run-record schema below (not the whole `run_log.jsonl`;
+     that only exists locally), with `hardware` set to the actual Kaggle
+     accelerator (e.g. `"Kaggle T4 x2"`).
+   - "Save Version" → "Save & Run All", wait for it to finish.
+4. **Bring results back.** Download the notebook's output (Output tab, or
+   `kaggle kernels output <user>/<slug> -p ./kaggle_output` if the Kaggle CLI
+   + API token are set up locally). Copy
+   `runs/<run_id>/checkpoint/` and `runs/<run_id>/config.json` into the local
+   repo at the identical path, then **append** the downloaded
+   `run_record.json`'s content as one line to `runs/run_log.jsonl` (never
+   overwrite that file — always append). Proceed with the rest of the part's
+   "Definition of done" locally as written.
 
 ## Shared conventions every part must follow
 
