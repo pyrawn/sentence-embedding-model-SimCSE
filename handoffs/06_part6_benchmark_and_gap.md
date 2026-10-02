@@ -23,15 +23,18 @@ with one row per:
 | Your supervised SimCSE | | | | |
 | raw bert-base-uncased (mean pooling) | 59.31 | 47.29 | | |
 | SBERT-2019 (bert-base-nli-mean-tokens) | 80.77 | 76.98 | | |
-| SimCSE paper (unsup, reported) | 76.85 | — | — | — |
-| SimCSE paper (sup, reported) | 84.25 | — | — | — |
+| SimCSE paper (unsup, reported) | 82.5 | 76.85 | — | — |
+| SimCSE paper (sup, reported) | 86.2 | 84.25 | — | — |
 
 Use `evaluate_sts` (Part 4) for the reproduced rows; use the reference values
-from `00_INDEX.md` for raw BERT / SBERT-2019 dev and test; use the paper's
-own reported STS-B numbers for the paper rows (cite the exact table/number
-you pull from the paper — verify against the paper rather than trusting the
-placeholder values above, which may be imprecise). Compare **dev with dev and
-test with test** — never mix them in one comparison.
+from `00_INDEX.md` for raw BERT / SBERT-2019 dev and test; the paper rows
+above are verified against the paper itself (unsup: Table 1, dev=82.5 /
+Table 5, test=76.85; sup: Table 7, dev=86.2 / Table 5, test=84.25) — double
+check them yourself against the PDF before publishing the final table, but
+they are not placeholders. Compare **dev with dev and test with test** —
+never mix them in one comparison (this is exactly why the two numbers per
+paper-row matter: comparing your dev Spearman against the paper's 76.85
+would understate your gap, because 76.85 is the paper's *test* number).
 
 ## Task 2 — The gap paragraph
 Write `reports/gap_analysis.md` accounting for the distance between your
