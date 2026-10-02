@@ -62,6 +62,16 @@ configs/
   supervised.json                # Part 3
   ablation_unsup_same_mask.json  # Part 5
   ablation_sup_no_hardneg.json   # Part 5
+notebooks/
+  <run_id>.ipynb                 # Part 3/5: the executed Kaggle notebook (with
+                                  # cell outputs/logs) for each GPU run, kept as
+                                  # evidence for the report — versioned in git
+kaggle/
+  <mode>.ipynb                   # Part 3/5: source notebook uploaded to Kaggle
+  build_*_dataset.sh             # Part 3/5: scripts that assemble Kaggle Dataset folders
+  dist/                          # Part 3/5: built Kaggle Dataset zips (gitignored)
+  downloads/                     # Part 3/5: raw Kaggle output downloads (gitignored,
+                                  # staging only — ingest into runs/ then discard)
 runs/
   run_log.jsonl                  # append-only, one JSON object per completed run
   <run_id>/
@@ -124,6 +134,11 @@ results back. Workflow:
    `run_record.json`'s content as one line to `runs/run_log.jsonl` (never
    overwrite that file — always append). Proceed with the rest of the part's
    "Definition of done" locally as written.
+5. **Keep the executed notebook as evidence.** Also download the notebook
+   itself (with its cell outputs/logs — download it from the already-run
+   version, not a fresh editor draft) and save it as `notebooks/<run_id>.ipynb`.
+   This is versioned in git (unlike `kaggle/downloads/`) — it's the log
+   backing any training-instability discussion in the report.
 
 ## Shared conventions every part must follow
 

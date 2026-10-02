@@ -50,3 +50,5 @@ model_cards/*/*
 # --- Experiment tracking, if used ---
 wandb/
 mlruns/
+kaggle/dist/
+kaggle/downloads/
