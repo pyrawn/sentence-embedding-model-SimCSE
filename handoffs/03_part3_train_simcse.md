@@ -10,6 +10,15 @@ dev-set checkpoint selection — do not reimplement evaluation.
 **Input**: `data/processed/unsup_sentences.txt` and
 `data/processed/sup_pairs.jsonl` (Part 2), `data/stsb/dev.jsonl` (Part 4).
 
+**No local GPU**: this machine cannot train BERT at a usable speed. Your job
+here is to write and smoke-test `src/train_simcse.py` locally on CPU (a tiny
+run — a few dozen sentences, 1–2 steps — just to catch shape/loss-computation
+bugs, not to actually converge anything), then hand off the real run to
+Kaggle following "Running training on Kaggle" in `00_INDEX.md`. You cannot
+execute inside Kaggle yourself — package the run per that section and stop;
+a human runs it and brings the checkpoint + `run_record.json` back. Resume
+from "During training" below only once those files exist locally.
+
 The two modes below can be built and run independently (e.g. by two different
 workers) — they share `src/train_simcse.py` with a `--mode` flag but do not
 depend on each other's runs.
@@ -48,24 +57,34 @@ beyond what's stated.
 - Config file: `configs/supervised.json`.
 - Run id prefix: `sup_`.
 
-## During training (both modes)
-- Periodically call `evaluate_sts(..., split_path="data/stsb/dev.jsonl")` from
-  Part 4's harness; keep the checkpoint with the best dev Spearman, discard
-  the rest (don't fill disk with every epoch's weights).
+## During training (both modes, runs on Kaggle — see `00_INDEX.md`)
+- Inside the Kaggle notebook, periodically call
+  `evaluate_sts(..., split_path="data/stsb/dev.jsonl")` from Part 4's harness;
+  keep the checkpoint with the best dev Spearman, discard the rest (don't fill
+  the Kaggle output quota with every epoch's weights).
 - If loss doesn't move or collapses to (near-)zero, that's a signal to debug
   (common causes: wrong pooling/normalization before cosine sim, τ too
   low/high, learning rate too high, accidentally identical dropout masks for
   both views). Record what happened and the fix in the run's `notes` field —
   this feeds directly into the report (Part 6/7 reference it).
-- On completion, append one record to `runs/run_log.jsonl` per the schema in
-  `00_INDEX.md`, with `results.dev_spearman` filled in and
-  `results.test_spearman` left `null` (test is scored once, later, in Part 6).
+- On completion, the notebook writes `runs/<run_id>/run_record.json` (single
+  record, schema in `00_INDEX.md`), with `results.dev_spearman` filled in and
+  `results.test_spearman` left `null` (test is scored once, later, in Part 6),
+  and `hardware` set to the actual Kaggle accelerator used.
 - Save `runs/<run_id>/config.json`, `runs/<run_id>/results.json`, and
-  `runs/<run_id>/checkpoint/` (best checkpoint only).
+  `runs/<run_id>/checkpoint/` (best checkpoint only) under
+  `/kaggle/working/` so they're all in the downloadable output.
+
+## After bringing results back locally
+- Copy the downloaded `runs/<run_id>/checkpoint/` and `config.json` into the
+  local repo at the identical path.
+- Append the downloaded `run_record.json` as one new line to
+  `runs/run_log.jsonl` (append only, never overwrite).
 
 ## Definition of done
 - `configs/unsupervised.json` and `configs/supervised.json` exist with every
   hyperparameter used.
 - One completed run per mode in `runs/run_log.jsonl`, each with a saved best
-  checkpoint and a non-null `dev_spearman`.
+  checkpoint (present locally, not just on Kaggle) and a non-null
+  `dev_spearman`.
 - Any training instability encountered is documented in the run's `notes`.
