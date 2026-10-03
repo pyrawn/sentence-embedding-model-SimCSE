@@ -151,9 +151,15 @@ negative: 84.9 → with weighted contradiction: 86.2; contradiction alone
 already reaches 86.1, so most of the gain comes from adding the hard
 negative at all, not from the weighting). Likely reasons:
 
-- **Less data.** Our 100k-row SNLI subset gives 33,351 triplets, against
-  ~275k SNLI+MNLI triplets in the paper. That means fewer hard negatives in
-  total.
+- **Hard-negative coverage, the main cause (see `reports/gap_analysis.md` for
+  the full derivation).** The paper's 314k SNLI+MNLI triplets (Table 4) give
+  a hard negative for every anchor. Our 100k-row SNLI subset gives 33,351
+  triplets, but only 9,488 of them (28.4%) have a contradiction hypothesis
+  for the same premise — most anchors train with no hard negative at all. If
+  the paper's +1.3-point gain (Table 7, 84.9 → 86.2) scales linearly with
+  coverage, we'd expect 1.3 × 0.284 ≈ 0.37 — almost exactly the +0.36 we
+  measured at matched steps. Coverage alone explains nearly all of the
+  shortfall versus the paper's effect size.
 - **Early best checkpoints.** Both runs peak early (steps 150 and 350 of
   780), so most of the training where hard negatives would matter does not
   affect the selected checkpoint.

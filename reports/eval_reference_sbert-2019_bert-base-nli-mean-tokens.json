@@ -1,0 +1,16 @@
+{
+  "run_id": "reference_sbert-2019_bert-base-nli-mean-tokens",
+  "mode": "reference",
+  "model": "sentence-transformers/bert-base-nli-mean-tokens",
+  "eval_pooling": "mean",
+  "split": "dev",
+  "alignment": 0.19287586212158203,
+  "uniformity": -3.048695490309404,
+  "n_positive_pairs": 264,
+  "n_unique_sentences": 2910,
+  "alignment_definition": "mean ||f(x)-f(x+)||^2, STS-B dev pairs with gold >= 4/5",
+  "uniformity_definition": "log mean exp(-2||f(x_i)-f(x_j)||^2), unique STS-B dev sentences, i<j",
+  "seed": 42,
+  "device": "cpu",
+  "timestamp": "2026-10-03T02:07:33Z"
+}
