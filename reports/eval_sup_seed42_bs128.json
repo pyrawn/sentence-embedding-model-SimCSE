@@ -1,0 +1,60 @@
+{
+  "run_id": "sup_seed42_bs128",
+  "mode": "supervised",
+  "checkpoint_path": "runs/sup_seed42_bs128/checkpoint/",
+  "eval_pooling": "cls",
+  "split": "dev",
+  "dev_spearman": 0.8204571136606468,
+  "dev_spearman_logged": 0.8204571129313513,
+  "alignment": 0.2196252942085266,
+  "uniformity": -3.36152962984783,
+  "n_positive_pairs": 264,
+  "n_unique_sentences": 2910,
+  "alignment_definition": "mean ||f(x)-f(x+)||^2, STS-B dev pairs with gold >= 4/5",
+  "uniformity_definition": "log mean exp(-2||f(x_i)-f(x_j)||^2), unique STS-B dev sentences, i<j",
+  "similarity_by_gold_bucket": {
+    "bucket_0": {
+      "n": 242,
+      "median": 0.2856326103210449,
+      "mean": 0.2719225840727714
+    },
+    "bucket_1": {
+      "n": 235,
+      "median": 0.4629599153995514,
+      "mean": 0.465150301095019
+    },
+    "bucket_2": {
+      "n": 273,
+      "median": 0.6559692621231079,
+      "mean": 0.6444437902816486
+    },
+    "bucket_3": {
+      "n": 346,
+      "median": 0.7656646370887756,
+      "mean": 0.7421546518974911
+    },
+    "bucket_4": {
+      "n": 285,
+      "median": 0.8533076643943787,
+      "mean": 0.8352188173093293
+    },
+    "bucket_5": {
+      "n": 119,
+      "median": 0.949447751045227,
+      "mean": 0.9326898610892416
+    }
+  },
+  "retrieval": {
+    "n_queries": 264,
+    "recall_at_1": 0.8901515151515151,
+    "recall_at_5": 0.9848484848484849,
+    "mrr": 0.9293087121212121,
+    "n_wrong_top1_unrelated": 38,
+    "corpus_size": 2910
+  },
+  "figure": "reports/figures/sim_distribution_sup_seed42_bs128.png",
+  "retrievals_file": "reports/retrievals_sup_seed42_bs128.md",
+  "seed": 42,
+  "device": "cpu",
+  "timestamp": "2026-10-03T01:40:26Z"
+}
