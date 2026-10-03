@@ -52,3 +52,4 @@ wandb/
 mlruns/
 kaggle/dist/
 kaggle/downloads/
+.fonts_tmp/

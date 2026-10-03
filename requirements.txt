@@ -5,3 +5,6 @@ torch==2.14.1
 transformers==5.18.0
 sentence-transformers==6.1.0
 matplotlib==3.11.2
+markdown==3.11
+beautifulsoup4==4.15.0
+xhtml2pdf==0.2.21
