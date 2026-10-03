@@ -1,0 +1,16 @@
+{
+  "run_id": "reference_bert-base-uncased_mean",
+  "mode": "reference",
+  "model": "bert-base-uncased",
+  "eval_pooling": "mean",
+  "split": "dev",
+  "alignment": 0.19483457505702972,
+  "uniformity": -1.649670025641049,
+  "n_positive_pairs": 264,
+  "n_unique_sentences": 2910,
+  "alignment_definition": "mean ||f(x)-f(x+)||^2, STS-B dev pairs with gold >= 4/5",
+  "uniformity_definition": "log mean exp(-2||f(x_i)-f(x_j)||^2), unique STS-B dev sentences, i<j",
+  "seed": 42,
+  "device": "cpu",
+  "timestamp": "2026-10-03T02:05:35Z"
+}

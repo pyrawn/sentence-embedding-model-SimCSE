@@ -41,10 +41,14 @@ Write `reports/gap_analysis.md` accounting for the distance between your
 numbers and the paper's reported numbers. At minimum, identify and discuss
 these known differences between your setup and the paper's, and put a rough
 number on each one's likely contribution where you can:
-- **Training data size/source**: you train on a 100k-record SNLI subset built
-  by dropping no-consensus records and sampling, not the paper's full
-  NLI-derived corpus (paper uses ~1M sentences unsupervised / the full SNLI+MNLI
-  supervised set).
+- **Training data size/source**: for unsupervised, the paper trains on 10⁶
+  sentences sampled from English Wikipedia (§3/Appendix A) — unrelated to
+  NLI entirely — while you train on 165,529 sentences pooled from the SNLI
+  subset; both the source and the size differ. For supervised, the paper
+  trains on 314k SNLI+MNLI entailment pairs (Table 4/Appendix A), all with a
+  contradiction hard negative available; you train on 33,351 SNLI-only pairs
+  with hard negatives for only ~28% of them — smaller, single-dataset, and
+  with partial hard-negative coverage.
 - **Compute/training budget**: fewer steps/epochs, smaller batch size, or
   fewer seeds than the paper's tuned setup, if applicable to your actual
   config — compare your `configs/*.json` values to the paper's reported
