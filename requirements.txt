@@ -4,3 +4,4 @@ scipy==1.18.1
 torch==2.14.1
 transformers==5.18.0
 sentence-transformers==6.1.0
+matplotlib==3.11.2

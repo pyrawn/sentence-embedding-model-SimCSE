@@ -1,0 +1,60 @@
+{
+  "run_id": "unsup_seed42_bs64",
+  "mode": "unsupervised",
+  "checkpoint_path": "runs/unsup_seed42_bs64/checkpoint/",
+  "eval_pooling": "cls_before_pooler",
+  "split": "dev",
+  "dev_spearman": 0.7692467989842117,
+  "dev_spearman_logged": 0.7692467983004365,
+  "alignment": 0.3054419457912445,
+  "uniformity": -2.963295754564668,
+  "n_positive_pairs": 264,
+  "n_unique_sentences": 2910,
+  "alignment_definition": "mean ||f(x)-f(x+)||^2, STS-B dev pairs with gold >= 4/5",
+  "uniformity_definition": "log mean exp(-2||f(x_i)-f(x_j)||^2), unique STS-B dev sentences, i<j",
+  "similarity_by_gold_bucket": {
+    "bucket_0": {
+      "n": 242,
+      "median": 0.3584200292825699,
+      "mean": 0.37219674851406703
+    },
+    "bucket_1": {
+      "n": 235,
+      "median": 0.5150327682495117,
+      "mean": 0.5272591066487292
+    },
+    "bucket_2": {
+      "n": 273,
+      "median": 0.6383050084114075,
+      "mean": 0.6516701069288638
+    },
+    "bucket_3": {
+      "n": 346,
+      "median": 0.7415188848972321,
+      "mean": 0.7262167759196607
+    },
+    "bucket_4": {
+      "n": 285,
+      "median": 0.8193600177764893,
+      "mean": 0.8029394357873683
+    },
+    "bucket_5": {
+      "n": 119,
+      "median": 0.8972667455673218,
+      "mean": 0.8843199099813189
+    }
+  },
+  "retrieval": {
+    "n_queries": 264,
+    "recall_at_1": 0.8295454545454546,
+    "recall_at_5": 0.9583333333333334,
+    "mrr": 0.885229883752611,
+    "n_wrong_top1_unrelated": 33,
+    "corpus_size": 2910
+  },
+  "figure": "reports/figures/sim_distribution_unsup_seed42_bs64.png",
+  "retrievals_file": "reports/retrievals_unsup_seed42_bs64.md",
+  "seed": 42,
+  "device": "cpu",
+  "timestamp": "2026-10-03T01:35:09Z"
+}
