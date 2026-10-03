@@ -9,9 +9,9 @@ STS-B **dev** split (1,500 pairs), computed by `src/evaluate.py`. "Best" means
 the best of the periodic dev evaluations, which is also the checkpoint kept
 under `runs/<run_id>/checkpoint/`.
 
-Test deltas are **not reported yet**. The test split is scored exactly once,
-in Part 6, for the final model only. If Part 6 also scores these checkpoints,
-add the test column then.
+Test was left unscored for the ablations until Part 6 had scored the two
+baselines. Each ablation checkpoint was then scored on test exactly once, as
+a Part 8 extension; see [Test deltas](#test-deltas-part-8) at the end.
 
 ## Results
 
@@ -168,3 +168,27 @@ negative at all, not from the weighting). Likely reasons:
 
 With one seed per config, we can only say that hard negatives help by at most
 a few tenths of a point in this setup. We cannot claim a significant gain.
+
+## Test deltas (Part 8)
+
+After Part 6, the two kept ablation checkpoints were scored on STS-B
+**test** (1,379 pairs) exactly once. We used `evaluate_sts` from
+`src/evaluate.py` with each run's own `eval_pooling`, seed 42 and batch 64,
+the same procedure as `benchmark.py --score-test`. The results are in
+`results.test_spearman` of their lines in `runs/run_log.jsonl`. The
+checkpoints had already been chosen by dev, so test played no part in any
+selection.
+
+| Pair | Test baseline | Test ablated | Δ test | Δ dev (for comparison) |
+|---|---|---|---|---|
+| Unsupervised (`same_dropout_mask`) | 68.33 | 52.33 | **−16.00** | −15.4 |
+| Supervised (`use_hard_negatives`) | 78.75 | 77.30 | **−1.45** | −0.23 |
+
+The unsupervised collapse carries over to test at the same size: the
+ablation falls to 5.0 points above raw BERT's 47.29. The supervised delta
+keeps its sign but is about 6× larger on test than on dev. That makes the
+"hard negatives help" reading more plausible, but it is still one seed and
+one reading. The test Fisher-z SE at ρ ≈ 0.78 is about 1 point per model
+(less for the paired difference), so −1.45 is suggestive, not significant.
+Do not compare it with the paper's +1.3, which is a **dev** number
+(Table 7).

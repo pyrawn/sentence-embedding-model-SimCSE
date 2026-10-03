@@ -7,7 +7,7 @@ Spearman ρ ×100 between cosine similarity and gold scores on STS-B (`sentence-
 | Our unsupervised SimCSE (`unsup_seed42_bs64`) | 76.92 | 68.33 | 0.305 | -2.963 |
 | Our supervised SimCSE (`sup_seed42_bs128`) | 82.05 | 78.75 | 0.220 | -3.362 |
 | raw bert-base-uncased (mean pooling) | 59.31 | 47.29 | 0.195 | -1.650 |
-| SBERT-2019 (bert-base-nli-mean-tokens) | 80.77 | 76.98 | 0.193 | -3.049 |
+| SBERT-2019 (`bert-base-nli-mean-tokens`) | 80.77 | 76.98 | 0.193 | -3.049 |
 | SimCSE paper (unsup, reported) | 82.50 | 76.85 | — | — |
 | SimCSE paper (sup, reported) | 86.20 | 84.25 | — | — |
 
